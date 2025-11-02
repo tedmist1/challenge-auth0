@@ -2,7 +2,7 @@
 
 ## Overview
 
-This document details a proposed design for the IT Systems Engineer Coding Challenge for Teleport. Full details on the challenge are available [here.](https://github.com/gravitational/careers/blob/main/challenges/security-automation/challenge.md).
+This document details a proposed design for the IT Systems Engineer Coding Challenge for Teleport. Full details on the challenge are available [here](https://github.com/gravitational/careers/blob/main/challenges/security-automation/challenge.md).
 
 ## Proposed Design
 
