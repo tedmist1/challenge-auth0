@@ -23,7 +23,7 @@ Terraform will be used to define and deploy all Auth0 resources. The repository 
 		* `tenant.tfvars.json` - specifies detail for auth0_tenant
 		* `webapp.tfvars.json` - specifies details for auth0_webapp module
 
-Each module will have variables used to define the resource specifics. These specifics will be stored in the .tfvars.json files. Json files are preferred over HCL files for automation pipeline that may generate or consume the files.
+Each module will have variables used to define the resource specifics. These specifics will be stored in the .tfvars.json files. Json files are preferred over HCL files for automation pipelines that may generate or consume the files.
 
 **Web-app Integration**
 
