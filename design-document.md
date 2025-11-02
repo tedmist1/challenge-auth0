@@ -2,7 +2,7 @@
 
 ## Overview
 
-This document details a proposed design for the IT Systems Engineer Coding Challenge for Teleport. Full details on the challenge are available[here.](https://github.com/gravitational/careers/blob/main/challenges/security-automation/challenge.md).
+This document details a proposed design for the IT Systems Engineer Coding Challenge for Teleport. Full details on the challenge are available [here.](https://github.com/gravitational/careers/blob/main/challenges/security-automation/challenge.md).
 
 ## Proposed Design
 
@@ -40,6 +40,7 @@ A PowerShell script outside of the Terraform code will be created for user regis
 
 
 **Automation and Workflows**
+
 Three separate GitHub Actions workflows automate the deployment process:
 1. Configuration of the Auth0 Tenant
 2. Adding a Web Application
