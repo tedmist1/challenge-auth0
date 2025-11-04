@@ -16,23 +16,23 @@ Terraform will be used to define and deploy all Auth0 resources. The repository 
 
 * Two Terraform modules
 
-* `auth0_tenant` - responsible for configuring the Auth0 tenant
+  * `auth0_tenant` - responsible for configuring the Auth0 tenant
 
-* `auth0_webapp` - responsible for adding a web application to the Auth0 tenant
+  * `auth0_webapp` - responsible for adding a web application to the Auth0 tenant
 
 * Standard Terraform file structure
 
-* `main.tf`
+  * `main.tf`
 
-* `providers.tf`
+  * `providers.tf`
 
-* `variables.tf`
+  * `variables.tf`
 
-* `~.tfvars.json` - Split into two for the different modules
+  * `~.tfvars.json` - Split into two for the different modules
 
-* `tenant.tfvars.json` - specifies detail for auth0_tenant
+    * `tenant.tfvars.json` - specifies detail for auth0_tenant
 
-* `webapp.tfvars.json` - specifies details for auth0_webapp module
+    * `webapp.tfvars.json` - specifies details for auth0_webapp module
 
 Each module will have variables used to define the resource specifics. These specifics will be stored in the .tfvars.json files. Json files are preferred over HCL files for automation pipelines that may generate or consume the files. Any sensitive information will instead be read in by an environment variable.
 
