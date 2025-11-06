@@ -1,7 +1,6 @@
 
 # Design Document - IT Systems Engineer Coding Challenge
 
-
 ## Overview 
 
 This document details a proposed design for the IT Systems Engineer Coding Challenge for Teleport. Full details on the challenge are available [here](https://github.com/gravitational/careers/blob/main/challenges/security-automation/challenge.md).
@@ -46,9 +45,9 @@ A Dockerized Grafana OSS instance will be hosted locally as the sample applicati
 
 * Auth0 authenticated users will be able to sign in to Grafana
 
-Grafana OSS will be containerized and run locally using Docker Compose. The Compose file will include Grafana, Caddy (for reverse proxy and TLS), and OIDC environment variables. Grafana will be started via  `docker compose up -d`.
+Grafana OSS will be run locally using Docker Compose. The Compose file will include Grafana and OIDC environment variables. Grafana will be started via  `docker compose up -d`.
 
-  **User Registration**
+**User Registration**
 
 A Bash script outside of the Terraform code will be created for user registration. This script will:
 
@@ -58,7 +57,9 @@ A Bash script outside of the Terraform code will be created for user registratio
 
 * This API token will be stored in GitHub Secrets Manager
 
-* Register a sample user in the tenant's database via HTTP POST request to Auth0 Management API endpoint. (`POST https://{auth0_domain}/api/v2/users`).
+* Register a sample user in the tenant's database via HTTP POST request to Auth0 Management API endpoint. (`POST https://{auth0_domain}/passwordless/start`). 
+
+The Auth0 tenant will be configured to allow for passwordless authentication via the Terraform scripts. This will allow users to be registered without having to supply a password as part of the CI/CD pipeline. Upon registering a new user, either an email or text will be sent, providing the user with a One-Time Password(OTP).
 
 **Automation and Workflows**
 
@@ -70,12 +71,13 @@ Three separate GitHub Actions workflows automate the deployment process:
 
 3. Registering a user
 
-   
 Each workflow will securely retrieve credentials from GitHub Secrets Manager and execute Terraform commands within the controlled CI/CD pipeline. Each workflow will only run when merges to the main branch are approved. Branch protection rules will enforce code review before merging, restricting `write` or `maintain` access to specific individuals.
 
  **Auth0 tenant**
 
 The Auth0 tenant will be created via the Auth0 dashboard and managed through Terraform using the `auth0 provider`. The`auth0_tenant` resource will configure connection settings. Input variables will be defined in the `.tfvars` files, with sensitive values provided in environment variables. Workflows in GitHub Actions will call `terraform apply`to apply these configurations automatically.
+
+To enforce Strong Authentication,  Terraform will manage a `auth0_guardian` resource.  Auth0 Guardian will be require  users to enroll in Multi-Factor Authentication(MFA), ensuring access is protected beyond just username and password. Several different MFA methods will be supported (such as OTP and Duo).
 
 ## Tech stack
 
@@ -105,10 +107,8 @@ The Auth0 tenant will be created via the Auth0 dashboard and managed through Ter
 
 6. Validate end-to-end authentication with a sample user in Grafana.
 
-
 ## Design Decisions
-
-
+  
 - Which credential manager to use
 
 - GitHub Secrets Manager was chosen over AWS Secrets Manager or Azure KeyVault, since this project does not have a dedicated cloud provider.
@@ -127,11 +127,9 @@ The Auth0 tenant will be created via the Auth0 dashboard and managed through Ter
 
 - Why use branch protection to lockdown the repository
 
-- In an enterprise environment, we could configure just in time through a 3rd party connector. This could be configured to allow any user to have temporary write access to main. This would require a 3rd party connector as well as a GitHub Enterprise organization, which is outside the scope of this design.
-
+- In an enterprise environment, we could configure just in time through a 3rd party connector. This could be configured to allow any user to have temporary write access to main. This would require a 3rd party connector as well as a GitHub Enterprise organization, which is outside the scope of this design. 
 
 ## Scope Limitations
-
 
 * Terraform S3 state is stored locally
 
