@@ -14,8 +14,9 @@ resource "auth0_tenant" "tenant"{
         mfa_show_factor_list_on_enrollment = true
     }
 
-    session_lifetime = var.session_lifetime
-    idle_session_lifetime = var.idle_session_lifetime
+    # These could be coded as variables in a production environment for more flexibility but hardcoded in this case
+    session_lifetime = 8
+    idle_session_lifetime = 2
 
     session_cookie {
         mode = "non-persistent" 
