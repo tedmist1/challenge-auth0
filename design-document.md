@@ -77,7 +77,7 @@ Each workflow will securely retrieve credentials from GitHub Secrets Manager and
 
 The Auth0 tenant will be created via the Auth0 dashboard and managed through Terraform using the `auth0 provider`. The`auth0_tenant` resource will configure connection settings. Input variables will be defined in the `.tfvars` files, with sensitive values provided in environment variables. Workflows in GitHub Actions will call `terraform apply`to apply these configurations automatically.
 
-To enforce Strong Authentication, the `auth0_tenant` resource will have an MFA configuration block. This will enforce all users to enroll in MFA. In addition, an `auth0_connection` resource will be used to determine the primary login method for users. For simplicity, passwordless login will be enforced, to align with the creation of new users being passwordless.
+To enforce Strong Authentication, an `auth0_connection` resource will be used to set the primary login method for users. This will be hard coded to be passwordless, as it aligns with the user enrollment process. Flags will be set to allow users to choose MFA options upon logging in. Auth0's native MFA setups have been deprecated (Auth0_guardian), so the only way to enforce MFA would be to manually hit the API endpoint with a Terraform block.
 
 ## Tech stack
 
