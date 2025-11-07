@@ -12,6 +12,7 @@ resource "auth0_tenant" "tenant"{
         enable_apis_section = true
         enable_client_connections = false
         # change_password_flow_v1 = false
+        mfa_show_factor_list_on_enrollment = true
     }
 
     session_lifetime = var.session_lifetime
@@ -19,4 +20,6 @@ resource "auth0_tenant" "tenant"{
     session_cookie {
         mode = "non-persistent" # TODO potentially modify
     }
+
+    
 }
