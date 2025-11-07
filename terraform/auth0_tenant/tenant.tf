@@ -16,6 +16,7 @@ resource "auth0_tenant" "tenant"{
     }
 
     session_lifetime = var.session_lifetime
+    idle_session_lifetime = var.idle_session_lifetime
 
     session_cookie {
         mode = "non-persistent" # TODO potentially modify

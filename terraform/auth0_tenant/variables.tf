@@ -12,7 +12,7 @@ variable "support_url" {
 
 variable "session_lifetime" { # Default duration is 8 hour window
     type = number
-    default = 2
+    default = 8
 }
 
 variable "idle_session_lifetime" { # Default of 2 hour idle duration

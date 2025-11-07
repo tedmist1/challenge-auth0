@@ -11,7 +11,6 @@ resource "auth0_connection" "passwordless-email" {
     template                 = "<html>Please login using this passwordless email.</html>"
     disable_signup           = false
     brute_force_protection   = true
-    set_user_root_attributes = "on_each_login"
     non_persistent_attrs     = []
     auth_params = {
       scope         = "openid email profile offline_access"
