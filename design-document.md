@@ -77,7 +77,7 @@ Each workflow will securely retrieve credentials from GitHub Secrets Manager and
 
 The Auth0 tenant will be created via the Auth0 dashboard and managed through Terraform using the `auth0 provider`. The`auth0_tenant` resource will configure connection settings. Input variables will be defined in the `.tfvars` files, with sensitive values provided in environment variables. Workflows in GitHub Actions will call `terraform apply`to apply these configurations automatically.
 
-To enforce Strong Authentication,  Terraform will manage a `auth0_guardian` resource.  Auth0 Guardian will be require  users to enroll in Multi-Factor Authentication(MFA), ensuring access is protected beyond just username and password. Several different MFA methods will be supported (such as OTP and Duo).
+To enforce Strong Authentication, the `auth0_tenant` resource will have an MFA configuration block. This will enforce all users to enroll in MFA. In addition, an `auth0_connection` resource will be used to determine the primary login method for users. For simplicity, passwordless login will be enforced, to align with the creation of new users being passwordless.
 
 ## Tech stack
 
@@ -111,26 +111,26 @@ To enforce Strong Authentication,  Terraform will manage a `auth0_guardian` reso
   
 - Which credential manager to use
 
-- GitHub Secrets Manager was chosen over AWS Secrets Manager or Azure KeyVault, since this project does not have a dedicated cloud provider.
+  - GitHub Secrets Manager was chosen over AWS Secrets Manager or Azure KeyVault, since this project does not have a dedicated cloud provider.
 
 - Why Docker
 
-- Running Grafana in a container will be provide a more consistent and secure setup than running it on a local machine. Also, having applications run in containers more closely mirrors production web applications that would be added to a sample here.
+  - Running Grafana in a container will be provide a more consistent and secure setup than running it on a local machine. Also, having applications run in containers more closely mirrors production web applications that would be added to a sample here.
 
 - Why Bash
 
-- I (Tyler Edmiston) have much more experience with Bash than with Go. In a production or long-term company setting, Go would be preferred for consistency with Teleport's existing tech stack (to my understanding).
+  - I (Tyler Edmiston) have much more experience with Bash than with Go. In a production or long-term company setting, Go would be preferred for consistency with Teleport's existing tech stack (to my understanding).
 
 - Why separate credentials by workflow
 
-- The permissions needed to configure an Auth0 tenant and to add a web application to that tenant will vary. Using separate credentials helps enforce the principle of least privilege.
+  - The permissions needed to configure an Auth0 tenant and to add a web application to that tenant will vary. Using separate credentials helps enforce the principle of least privilege.
 
 - Why use branch protection to lockdown the repository
 
-- In an enterprise environment, we could configure just in time through a 3rd party connector. This could be configured to allow any user to have temporary write access to main. This would require a 3rd party connector as well as a GitHub Enterprise organization, which is outside the scope of this design. 
+  - In an enterprise environment, we could configure just in time through a 3rd party connector. This could be configured to allow any user to have temporary write access to main. This would require a 3rd party connector as well as a GitHub Enterprise organization, which is outside the scope of this design. 
 
 ## Scope Limitations
 
 * Terraform S3 state is stored locally
 
-* If a cloud environment already existed, storing S3 state in a bucket with state locking and access control would be the preferred solution. For an MVP, this is a deliberate simplification.
+  * If a cloud environment already existed, storing S3 state in a bucket with state locking and access control would be the preferred solution. For an MVP, this is a deliberate simplification.
